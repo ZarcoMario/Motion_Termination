@@ -17,7 +17,7 @@ from movement_onset_detection import onset_detection
 # range_ = [i for i in range(1, 44 + 1) if i != 17]
 
 # PARTICIPANTS
-for i, p_ in enumerate(range(1, 4 + 1)):
+for i, p_ in enumerate(range(8, 10 + 1)):
 
     # VR-S1 Data
     # p_ = 3
@@ -37,7 +37,7 @@ for i, p_ in enumerate(range(1, 4 + 1)):
 
     print(participant_)
 
-    for trial_number in range(17, 284 + 1, 1):
+    for trial_number in range(17, 276 + 1, 1):
 
         path_trial = path_ + r"\trackers" + r"\controllertracker_movement_T" + str(trial_number).zfill(3) + ".csv"
 
@@ -91,7 +91,8 @@ for i, p_ in enumerate(range(1, 4 + 1)):
         else:
             idx_i = idx_ub
 
-        idx_f = termination_detection(vx, vy, vz, t, v_th=-0.2)
+
+        idx_f = termination_detection(vx, vy, vz, v_th=-0.2)
 
         if idx_f != x.size:
 

@@ -2,14 +2,16 @@ import numpy as np
 from scipy.signal import find_peaks
 
 
-def termination_detection(vx, vy, vz, t, v_th=-0.2):
+def termination_detection(vx, vy, vz, v_th=0.2):
     '''
-
-    :param vx:
-    :param vy:
-    :param vz:
-    :param v_th:
-    :return:
+    This function evaluates whether a section of the trajectory is to be discarded
+        and calculates the last index if this is the case
+    :param vx: first derivative of x.
+        NOTE: This function assumes that the location of the targets is different along the x dimension in UNITY
+    :param vy: first derivative of y.
+    :param vz: first derivative of z.
+    :param v_th: speed threshold below which the functions assumes there are minima of speed
+    :return: final index of the trajectory
     '''
     idx_i = np.argwhere(np.abs(vx) == np.max(np.abs(vx))).T[0][0]
 
@@ -17,7 +19,7 @@ def termination_detection(vx, vy, vz, t, v_th=-0.2):
     peaks, _ = find_peaks(-speed[idx_i:])
     peaks += idx_i
 
-    if np.all(speed[peaks] < np.abs(v_th)) and peaks.size >= 2:
+    if np.all(speed[peaks] < v_th) and peaks.size >= 2:
 
         indexes = np.argwhere(np.diff(np.sign(vx[idx_i:]))).T[0] + 1
 
