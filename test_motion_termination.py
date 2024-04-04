@@ -17,27 +17,28 @@ from movement_onset_detection import onset_detection
 # range_ = [i for i in range(1, 44 + 1) if i != 17]
 
 # PARTICIPANTS
-for i, p_ in enumerate(range(8, 10 + 1)):
+for i, p_ in enumerate(range(2, 2 + 1)):
 
     # VR-S1 Data
     # p_ = 3
     participant_ = r"\P" + str(p_).zfill(2)
-    path_ = os.path.dirname(os.getcwd()) + r"\VR-F1" + participant_ + r"\S001"
+    path_ = os.path.dirname(os.getcwd()) + r"\VR-S1" + participant_ + r"\S001"
 
     path_results = path_ + r"\trial_results.csv"
-    results = pd.read_csv(path_results, usecols=['start_time', 'initial_time'])
+    results = pd.read_csv(path_results, usecols=['start_time', 'initial_time', 'fin_pos_x'])
     start_time = results['start_time'].to_numpy()
     initiation_time = results['initial_time'].to_numpy()
     t_threshold = initiation_time - start_time
+    x_fin = results['fin_pos_x'].to_numpy()
 
-    path_fig = os.path.dirname(os.getcwd()) + r"\VR-F1" + r"\Adjusted" + participant_
+    path_fig = os.path.dirname(os.getcwd()) + r"\VR-S1" + r"\Adjusted" + participant_
 
     if not os.path.exists(path_fig):
         os.mkdir(path_fig)
 
     print(participant_)
 
-    for trial_number in range(17, 276 + 1, 1):
+    for trial_number in range(81, 81 + 1, 1):
 
         path_trial = path_ + r"\trackers" + r"\controllertracker_movement_T" + str(trial_number).zfill(3) + ".csv"
 
@@ -91,8 +92,8 @@ for i, p_ in enumerate(range(8, 10 + 1)):
         else:
             idx_i = idx_ub
 
-
-        idx_f = termination_detection(vx, vy, vz, v_th=-0.2)
+        idx_f = termination_detection(x, x_fin[trial_number - 1], vx, vy, vz)
+        print(idx_f, x.size)
 
         if idx_f != x.size:
 
@@ -112,7 +113,7 @@ for i, p_ in enumerate(range(8, 10 + 1)):
             ax.plot(x[idx_i:idx_f], z[idx_i:idx_f], 'b.', label='processed')
             ax.legend()
 
-            plt.savefig(path_fig + r"\T" + str(trial_number).zfill(3) + ".png")
-            # plt.show()
-            plt.close()
+            # plt.savefig(path_fig + r"\T" + str(trial_number).zfill(3) + ".png")
+            plt.show()
+            # plt.close()
 
