@@ -4,11 +4,12 @@ from scipy.signal import find_peaks
 
 def termination_detection(x, x_fin, vx, vy, vz, v_th=-0.1):
     '''
+    TODO: Comment this method and explain it better
     This function evaluates whether a section of the trajectory is to be discarded
         and calculates the last index if this is the case
         NOTE: This function assumes that the location of the targets
             is different along the x dimension in UNITY
-    :param x:
+    :param x: dimension tha differs
     :param x_fin:
     :param vx: first derivative of x.
     :param vy: first derivative of y
